@@ -1,5 +1,7 @@
 package com.mangafy.api.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,21 +22,23 @@ import lombok.Setter;
 @Setter
 public class Comentario {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(length = 200)
 	private String descricao;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "comentario_pai_id")
-    private Comentario comentarioPai;
-	
+	@JoinColumn(name = "comentario_pai_id")
+	private Comentario comentarioPai;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leitor_id", nullable = false)
-    private Leitor leitor;
-	
+	@JoinColumn(name = "leitor_id", nullable = false)
+	@JsonIgnore
+	private Leitor leitor;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publicacao_id", nullable = false)
-    private Publicacao publicacao;
+	@JoinColumn(name = "publicacao_id", nullable = false)
+	@JsonIgnore
+	private Publicacao publicacao;
 }

@@ -2,6 +2,8 @@ package com.mangafy.api.domain.entity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,18 +26,20 @@ public class Avaliacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column
 	private BigDecimal nota;
-	
+
 	@Column(length = 200)
 	private String descricao;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leitor_id", nullable = false)
-    private Leitor leitor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publicacao_id", nullable = false)
-    private Publicacao publicacao;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "leitor_id", nullable = false)
+	@JsonIgnore
+	private Leitor leitor;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publicacao_id", nullable = false)
+	@JsonIgnore
+	private Publicacao publicacao;
 }
