@@ -55,7 +55,6 @@ public class MangaService implements IMangaService {
 		mangaModel.setISBN10(dto.ISBN10());
 		mangaModel.setISBN13(dto.ISBN13());
 		mangaModel.setCapaUrl(dto.capaUrl());
-		mangaModel.setTipo(PublicationType.MANGA);
 		mangaModel.setCapitulos(dto.capitulos());
 		mangaModel.setQtdCapitulos(dto.qtdCapitulos());
 		

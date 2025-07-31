@@ -3,6 +3,8 @@ package com.mangafy.api.domain.entity;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -24,9 +26,6 @@ public class Leitor extends Usuario {
 	@JoinTable(joinColumns = @JoinColumn(name = "leitor_id"), name = "ler_mais_tarde", inverseJoinColumns = @JoinColumn(name = "publicacao_id"))
 	private List<Publicacao> lerMaisTarde;
 
-	@OneToMany(mappedBy = "leitor", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Avaliacao> avaliacoes;
-
 	public Leitor(UUID id, String email, String nome, String apelido, String cpf, String cnpj,
 			List<Publicacao> lerMaisTarde, List<Avaliacao> avaliacoes) {
 		this.setId(id);
@@ -34,6 +33,5 @@ public class Leitor extends Usuario {
 		this.setNome(nome);
 		this.setApelido(apelido);
 		this.lerMaisTarde = lerMaisTarde;
-		this.avaliacoes = avaliacoes;
 	}
 }

@@ -1,5 +1,7 @@
 package com.mangafy.api.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class Capitulo {
 	
 	@ManyToOne
 	@JoinColumn(name = "manga_id")
+	@JsonIgnore
 	private Manga manga;
 
 }

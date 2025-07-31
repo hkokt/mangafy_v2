@@ -55,7 +55,6 @@ public class LivroService implements ILivroService {
 		livroModel.setISBN10(dto.ISBN10());
 		livroModel.setISBN13(dto.ISBN13());
 		livroModel.setCapaUrl(dto.capaUrl());
-		livroModel.setTipo(PublicationType.LIVRO);
 		livroModel.setNumPaginas(dto.numPaginas());
 		livroModel.setStorageUrl(dto.storageUrl());
 

@@ -67,10 +67,6 @@ public class Publicacao {
 	
 	@Column(name = "capa_url")
 	private String capaUrl;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo", nullable = false)
-	private PublicationType tipo;
 		
 	@OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Avaliacao> avaliacoes;
