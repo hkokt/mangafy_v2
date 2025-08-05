@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mangafy.api.application.dto.PublicacaoDto;
 import com.mangafy.api.application.service.IAutorService;
 import com.mangafy.api.application.service.ILivroService;
+import com.mangafy.api.application.service.IStorageService;
 import com.mangafy.api.domain.entity.Autor;
 import com.mangafy.api.domain.entity.Genero;
 import com.mangafy.api.domain.entity.Livro;
@@ -27,6 +29,9 @@ public class LivroService implements ILivroService {
 	@Autowired
 	private IAutorService autorService;
 
+	@Autowired
+	private IStorageService storageService;
+
 	@Override
 	public List<Livro> findAll() {
 		return this.livroRepository.findAll();
@@ -39,12 +44,15 @@ public class LivroService implements ILivroService {
 	}
 
 	@Override
-	public Livro create(PublicacaoDto dto) {
+	public Livro create(PublicacaoDto dto, MultipartFile imagem, MultipartFile pdf) throws Exception {
 		Autor autor = this.autorService.findById(dto.autorId());
 
 		List<Genero> generos = this.generoRepository.findAllById(dto.generosIds());
 
 		Livro livroModel = new Livro();
+
+		String capaUrl = "/" + dto.autorId() + "/" + dto.ISBN10() + "/cover.jpg";
+		String storageUrl = "/" + dto.autorId() + "/" + dto.ISBN10() + "/content.pdf";
 
 		livroModel.setAutor(autor);
 		livroModel.setGeneros(generos);
@@ -53,24 +61,30 @@ public class LivroService implements ILivroService {
 		livroModel.setDataDeLancamento(dto.dataDeLancamento());
 		livroModel.setISBN10(dto.ISBN10());
 		livroModel.setISBN13(dto.ISBN13());
-		livroModel.setCapaUrl(dto.capaUrl());
+		livroModel.setCapaUrl(capaUrl);
+		livroModel.setStorageUrl(storageUrl);
 		livroModel.setNumPaginas(dto.numPaginas());
-		livroModel.setStorageUrl(dto.storageUrl());
+
+		storageService.upload(capaUrl, imagem.getInputStream(), imagem.getContentType(), imagem.getSize());
+		storageService.upload(storageUrl, pdf.getInputStream(), pdf.getContentType(), pdf.getSize());
 
 		return this.livroRepository.save(livroModel);
 	}
 
 	@Override
-	public Livro update(Long id, PublicacaoDto dto) {
+	public Livro update(Long id, PublicacaoDto dto, MultipartFile imagem, MultipartFile pdf) throws Exception {
 		Livro livroModel = this.findById(id);
 		
 		List<Genero> generos = this.generoRepository.findAllById(dto.generosIds());
 
+		storageService.upload(livroModel.getCapaUrl(), imagem.getInputStream(), imagem.getContentType(), imagem.getSize());
+		storageService.upload(livroModel.getStorageUrl(), pdf.getInputStream(), pdf.getContentType(), pdf.getSize());
+		
 		livroModel.setGeneros(generos);
 		livroModel.setTitulo(dto.titulo());
 		livroModel.setSinopse(dto.sinopse());
-		livroModel.setCapaUrl(dto.capaUrl());
 		livroModel.setNumPaginas(dto.numPaginas());
+		livroModel.setDataDeLancamento(dto.dataDeLancamento());
 		
 		return this.livroRepository.save(livroModel);
 	}
