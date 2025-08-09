@@ -26,10 +26,14 @@ public class Capitulo {
 
 	@Column(name = "storage_url")
 	private String storageUrl;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "manga_id")
 	@JsonIgnore
 	private Manga manga;
 
+	public Capitulo(String storageUrl, Manga manga) {
+		this.setStorageUrl(storageUrl);
+		this.setManga(manga);
+	}
 }

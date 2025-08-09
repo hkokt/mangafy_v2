@@ -89,6 +89,15 @@ public class MangaService implements IMangaService {
 	public Manga delete(Long id) {
 		return null;
 	}
+
+	@Override
+	public Manga updateQtyChapters(Long id) {
+		Manga mangaModel = this.findById(id);
+		
+		mangaModel.setQtdCapitulos(mangaModel.getQtdCapitulos() + 1);
+		
+		return this.mangaRepository.save(mangaModel);
+	}
 	
 	
 }

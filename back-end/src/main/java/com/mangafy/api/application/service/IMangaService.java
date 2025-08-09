@@ -13,4 +13,6 @@ public interface IMangaService {
 	Manga create(PublicacaoDto dto, MultipartFile imagem, MultipartFile pdf) throws Exception;
 	Manga update(Long id, PublicacaoDto dto, MultipartFile imagem, MultipartFile pdf) throws Exception;
 	Manga delete(Long id);
+	
+	Manga updateQtyChapters(Long id);
 }
