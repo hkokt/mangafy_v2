@@ -50,9 +50,9 @@ public class LivroController {
 	public ResponseEntity<Livro> create(@RequestPart("dto") String dtoJson,
 			@RequestPart("imagem") MultipartFile imagem, @RequestPart("pdf") MultipartFile pdf) {
 		try {
-			PublicacaoDto dto = objectMapper.readValue(dtoJson, PublicacaoDto.class);
+			PublicacaoDto dto = this.objectMapper.readValue(dtoJson, PublicacaoDto.class);
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(livroService.create(dto, imagem, pdf));
+			return ResponseEntity.status(HttpStatus.CREATED).body(this.livroService.create(dto, imagem, pdf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -63,7 +63,7 @@ public class LivroController {
 	public ResponseEntity<Livro> update(@PathVariable Long id, @RequestPart("dto") String dtoJson,
 			@RequestPart("imagem") MultipartFile imagem, @RequestPart("pdf") MultipartFile pdf) {
 		try {
-			PublicacaoDto dto = objectMapper.readValue(dtoJson, PublicacaoDto.class);
+			PublicacaoDto dto = this.objectMapper.readValue(dtoJson, PublicacaoDto.class);
 
 			return ResponseEntity.status(HttpStatus.OK).body(this.livroService.update(id, dto, imagem, pdf));
 		} catch (Exception e) {
