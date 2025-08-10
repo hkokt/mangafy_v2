@@ -9,6 +9,6 @@ import com.mangafy.api.domain.entity.Capitulo;
 
 public interface ICapituloService {
 	List<Capitulo> findAllByMangaId(Long id);
-	List<Capitulo> create(Long mangaId, List<MultipartFile> imagens) throws IOException, Exception;
+	Capitulo create(Long mangaId, List<MultipartFile> imagens) throws IOException, Exception;
 	Capitulo delete(Integer id); 
 }

@@ -1,17 +1,14 @@
 package com.mangafy.api.domain.entity;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,18 +17,22 @@ import lombok.Setter;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "capitulos")
+@Table(name = "paginas")
 @Setter
-public class Capitulo {
+public class Pagina {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@OneToMany(mappedBy = "capitulo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pagina> paginas;
 
+	@Column(name = "storage_url")
+	private String storageUrl;
+	
 	@ManyToOne
-	@JoinColumn(name = "manga_id")
-	@JsonIgnore
-	private Manga manga;
+    @JoinColumn(name = "capitulo_id") // cria a coluna FK na tabela 'paginas'
+    @JsonIgnore
+	private Capitulo capitulo;
+	
+	public Pagina(String storageUrl) {
+		this.setStorageUrl(storageUrl);
+	}
 }

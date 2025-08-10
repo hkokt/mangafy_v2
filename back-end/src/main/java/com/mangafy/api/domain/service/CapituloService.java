@@ -12,6 +12,7 @@ import com.mangafy.api.application.service.ICapituloService;
 import com.mangafy.api.application.service.IStorageService;
 import com.mangafy.api.domain.entity.Capitulo;
 import com.mangafy.api.domain.entity.Manga;
+import com.mangafy.api.domain.entity.Pagina;
 import com.mangafy.api.domain.repository.CapituloRepository;
 
 @Service
@@ -31,22 +32,28 @@ public class CapituloService implements ICapituloService {
 	}
 
 	@Override
-	public List<Capitulo> create(Long mangaId, List<MultipartFile> imagens) throws IOException, Exception {
+	public Capitulo create(Long mangaId, List<MultipartFile> imagens) throws IOException, Exception {
 		Manga manga = this.mangaService.updateQtyChapters(mangaId);
-		String initialPath = "/" + manga.getAutor().getId() + "/" + manga.getISBN10() + "/content/";
+		
+		String titulo = manga.getTitulo().trim();
+		String capitulo = "chapter" + manga.getQtdCapitulos();
+		
+		String initialPath = "/" + manga.getAutor().getId() + "/" + titulo + "/content/" + capitulo;
 
-		List<Capitulo> capitulos = new ArrayList<>();
-
+		Capitulo capituloModel = new Capitulo();
+		List<Pagina> paginas = new ArrayList<>();
+		
 		for (int i = 0; i < imagens.size(); i++) {
 			MultipartFile imagem = imagens.get(i);
-			String storageUrl = initialPath + i;
-
-			capitulos.add(this.capituloRepository.save(new Capitulo(storageUrl, manga)));
-
+			String storageUrl = initialPath + "/" + i;
 			storageService.upload(storageUrl, imagem.getInputStream(), imagem.getContentType(), imagem.getSize());
+			paginas.add(new Pagina(storageUrl));
 		}
 		
-		return capitulos;
+		capituloModel.setManga(manga);
+		capituloModel.setPaginas(paginas);
+		
+		return this.capituloRepository.save(capituloModel);
 	}
 
 	@Override
