@@ -10,8 +10,8 @@ import lombok.Setter;
 @DiscriminatorValue("LIVRO")
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
+@Setter
 public class Livro extends Publicacao {
 	@Column(name = "num_paginas")
 	private Integer NumPaginas;
